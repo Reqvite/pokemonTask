@@ -37,7 +37,7 @@ export const Button = (props: ButtonProps) => {
       className={clsx(
         withAddon && "flex gap-2",
         className && `${className}`,
-        "h-fit w-fit border border-brand rounded-md font-medium transition-all",
+        "h-fit w-fit border rounded-md font-medium transition-all",
         fullWidth && "w-full flex items-center justify-center",
         size === "xs" && "h-5 px-1 py-1 text-xs",
         size === "sm" && "h-6 px-2 py-2 text-sm",
@@ -47,7 +47,7 @@ export const Button = (props: ButtonProps) => {
         variant === "outline" &&
           "border-purple-700 text-purple-700 hover:text-purple-400 hover:border-purple-400 hover:bg-purple-100",
         variant === "primary" &&
-          "bg-purple-700 text-white text hover:bg-purple-500",
+          "border-none bg-purple-700 text-white text hover:bg-purple-500",
         variant === "text" &&
           "border-none text-black hover:text-purple-400 hover:border-purple-400 hover:bg-purple-100 px-0 py-0",
         disabled &&

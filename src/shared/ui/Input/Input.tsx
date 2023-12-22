@@ -1,9 +1,8 @@
 import React, {
   InputHTMLAttributes,
-  memo,
   ReactNode,
+  forwardRef,
   useEffect,
-  useRef,
   useState,
 } from "react";
 import clsx from "clsx";
@@ -18,13 +17,14 @@ type InputSize = "sm" | "base" | "lg";
 export type InputVariant = "clear" | "primary";
 
 export interface InputProps extends HTMLInputProps {
+  error?: string;
   className?: string;
   isOptional?: boolean;
   value?: string | number;
   variant?: InputVariant;
   label?: string;
   fullWidth?: boolean;
-  onChange: (e: any) => void;
+  onChange?: (e: any) => void;
   autofocus?: boolean;
   readonly?: boolean;
   addonLeft?: ReactNode;
@@ -32,8 +32,9 @@ export interface InputProps extends HTMLInputProps {
   size?: InputSize;
 }
 
-export const Input = memo((props: InputProps) => {
+export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const {
+    error,
     isOptional,
     className,
     value,
@@ -48,15 +49,16 @@ export const Input = memo((props: InputProps) => {
     addonRight,
     label,
     size = "base",
+    name,
     ...otherProps
   } = props;
-  const ref = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
     if (autofocus) {
       setIsFocused(true);
-      ref.current?.focus();
+      //@ts-ignore
+      ref?.current?.focus();
     }
   }, [autofocus]);
 
@@ -73,7 +75,6 @@ export const Input = memo((props: InputProps) => {
   };
 
   const withAddon = addonLeft || addonRight;
-
   const input = (
     <div
       className={clsx(
@@ -87,6 +88,7 @@ export const Input = memo((props: InputProps) => {
       <input
         className={clsx(
           className && `${className}`,
+          error ? "border-red-500" : "border-gray-400",
           withAddon && "flex items-center gap-2",
           "rounded-md font-medium py-2  border-2 border-gray-400 hover:border-purple-700 transition-all",
           size === "sm" && "h-6 px-2  text-sm",
@@ -107,11 +109,15 @@ export const Input = memo((props: InputProps) => {
         onBlur={onBlur}
         readOnly={readonly}
         placeholder={placeholder}
+        name={name}
         {...otherProps}
       />
-      <div className="absolute right-2 top-1/2 transform -translate-x-0 -translate-y-1/2">
+      <div className="absolute right-6 top-1/2 transform -translate-x-0 -translate-y-1/2">
         {addonRight}
       </div>
+      <span className={clsx(error ? "text-red-500" : "text-transparent")}>
+        {error ? error : "0"}
+      </span>
     </div>
   );
 

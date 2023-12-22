@@ -11,6 +11,9 @@ const meta = {
   },
   tags: ["autodocs"],
   argTypes: {},
+  args: {
+    className: "text-black",
+  },
 } satisfies Meta<typeof Label>;
 
 export default meta;
