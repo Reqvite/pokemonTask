@@ -4,6 +4,11 @@
 
 @layer base {
   button, input {
-    @apply focus:outline-purple-500;
+    @apply focus:outline-purple-500 focus-visible:outline-purple-500;
+  }
+  body {
+    background: rgb(32, 32, 35);
+    color: white
   }
 }
+
