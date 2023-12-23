@@ -1,24 +1,12 @@
 import { $api } from "@/shared/api/api";
 import { PokemonI, SelectOptionI } from "@/shared/types";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { firstLetterToUpperCase } from "../helpers/firstLetterToUpperCase";
 
 export const useApp = () => {
   const [pokemonData, setPokemonData] = useState([]);
   const [selectedPokemons, setSelectedPokemons] = useState<PokemonI[]>([]);
   const [selectedOptions, setSelectedOptions] = useState<SelectOptionI[]>([]);
-
-  const fetchPockemon = useCallback(async (e?: string) => {
-    try {
-      const response = await $api.get(`pokemon/${e}`);
-      setSelectedPokemons((prevSelectedPokemons) => [
-        ...prevSelectedPokemons,
-        response.data,
-      ]);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  }, []);
 
   useEffect(() => {
     const getPokemons = async (e?: string) => {
@@ -43,26 +31,24 @@ export const useApp = () => {
     });
   };
 
-  const onSelect = (updatetedOptions: SelectOptionI[], value?: string) => {
+  const onSelect = (updatetedOptions: SelectOptionI[]) => {
     setSelectedOptions(updatetedOptions);
-    if (value) {
-      fetchPockemon(value);
-    }
   };
 
   const newData = normilizedData();
   useEffect(() => {
-    console.log(selectedOptions.length);
     if (selectedOptions.length === 4) {
-      console.log(1);
+      setSelectedPokemons([]);
       const fetchData = async () => {
         try {
-          const promises = selectedOptions.map(async (e) => {
-            const response = await $api.get(`pokemon/${e.value}`);
-            return response.data;
-          });
+          const promises = Promise.all(
+            selectedOptions.map(async (e) => {
+              const response = await $api.get(`pokemon/${e.value}`);
+              return response.data;
+            })
+          );
 
-          const selectedPokemonsData = await Promise.all(promises);
+          const selectedPokemonsData = await promises;
 
           setSelectedPokemons(selectedPokemonsData);
         } catch (error) {
@@ -79,7 +65,6 @@ export const useApp = () => {
     selectedOptions,
     selectedPokemons,
     setSelectedOptions,
-    setSelectedPokemons,
     onSelect,
   };
 };

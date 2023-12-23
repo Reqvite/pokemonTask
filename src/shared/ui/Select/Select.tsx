@@ -2,19 +2,16 @@ import { MouseEvent, useState } from "react";
 import clsx from "clsx";
 import { SelectBox } from "./SelectBox";
 import { DropDownBox } from "./DropDownBox";
-import { PokemonI, SelectOptionI } from "@/shared/types";
+import { SelectOptionI } from "@/shared/types";
 import { Label } from "../Label/Label";
 
 interface CustomSelectProps {
-  onSetSelectedPokemons: (
-    callback: (prevPokemons: PokemonI[]) => PokemonI[]
-  ) => void;
   error?: string;
   disabled?: boolean;
   fullWidth: boolean;
   label: string;
   options: Array<SelectOptionI>;
-  onSelect: (options: SelectOptionI[], value?: string) => void;
+  onSelect: (options: SelectOptionI[]) => void;
   selectedOptions?: Array<SelectOptionI>;
   maxSelectedOptions?: number;
   className?: string;
@@ -23,7 +20,6 @@ interface CustomSelectProps {
 
 export const Select = (props: CustomSelectProps) => {
   const {
-    onSetSelectedPokemons,
     error,
     iconColor = "black",
     label,
@@ -41,7 +37,7 @@ export const Select = (props: CustomSelectProps) => {
     if (!selectedOptions.some(({ value }) => value === option.value)) {
       const updatedSelectedOptions = [...selectedOptions, option];
       if (updatedSelectedOptions.length <= maxSelectedOptions) {
-        onSelect(updatedSelectedOptions, option.value);
+        onSelect(updatedSelectedOptions);
       }
     }
     setIsOpen(false);
@@ -54,12 +50,6 @@ export const Select = (props: CustomSelectProps) => {
       (option) => option.value !== value
     );
     onSelect(updatedSelectedOptions);
-
-    onSetSelectedPokemons((prevPokemons) => {
-      return prevPokemons.filter((pokemon) =>
-        updatedSelectedOptions.some((option) => option.value === pokemon.name)
-      );
-    });
   };
 
   const handleSelectClick = () => {
@@ -69,8 +59,6 @@ export const Select = (props: CustomSelectProps) => {
   const handleSelectClear = (e: MouseEvent) => {
     e.stopPropagation();
     onSelect([]);
-    //@ts-ignore
-    onSetSelectedPokemons([]);
   };
 
   return (

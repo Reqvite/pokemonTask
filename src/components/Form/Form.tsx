@@ -8,11 +8,8 @@ import { StartModal } from "../StartModal/StartModal";
 interface FormProps {
   selectedPokemons: PokemonI[];
   options: SelectOptionI[];
-  onSelect: (options: SelectOptionI[], value?: string) => void;
+  onSelect: (options: SelectOptionI[]) => void;
   selectedOptions: SelectOptionI[];
-  onSetSelectedPokemons: (
-    callback: (prevPokemons: PokemonI[]) => PokemonI[]
-  ) => void;
 }
 interface IFormInput {
   firstName: string;
@@ -21,13 +18,7 @@ interface IFormInput {
 const maxSelectedOptions = 4;
 
 export const Form = (props: FormProps) => {
-  const {
-    options,
-    selectedOptions,
-    onSelect,
-    selectedPokemons,
-    onSetSelectedPokemons,
-  } = props;
+  const { options, selectedOptions, onSelect, selectedPokemons } = props;
   const [isOpen, setIsOpen] = useState(false);
   const [selectError, setSelectError] = useState("");
 
@@ -53,7 +44,6 @@ export const Form = (props: FormProps) => {
   };
 
   useEffect(() => {
-    console.log(selectedOptions.length);
     if (selectedOptions.length === maxSelectedOptions) {
       setSelectError("");
     } else if (
@@ -102,7 +92,6 @@ export const Form = (props: FormProps) => {
           )}
         />
         <Select
-          onSetSelectedPokemons={onSetSelectedPokemons}
           error={selectError}
           maxSelectedOptions={maxSelectedOptions}
           onSelect={onSelect}
