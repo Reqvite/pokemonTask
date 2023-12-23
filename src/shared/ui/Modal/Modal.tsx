@@ -35,36 +35,38 @@ export const Modal = (props: ModalProps) => {
   }, [isOpen, onKeyDown]);
 
   return (
-    isOpen && (
-      <Portal element={document.getElementById("modals") ?? document.body}>
-        <div
-          className="relative z-10"
-          aria-labelledby="modal-title"
-          role="dialog"
-          aria-modal="true"
-        >
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-20 transition-opacity"></div>
-          <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-              <div
-                className={clsx(
-                  "relative p-6 transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-11/12",
-                  className && className
-                )}
-              >
-                <div className="flex justify-between items-center pb-4">
-                  <h3 className="text-5xl leading-tight">{title}</h3>
-                  <Button
-                    onClick={onClose}
-                    addonLeft={<CrossSvg width={20} height={20} />}
-                  />
+    <>
+      {isOpen && (
+        <Portal element={document.getElementById("modals") ?? document.body}>
+          <div
+            className="relative z-10"
+            aria-labelledby="modal-title"
+            role="dialog"
+            aria-modal="true"
+          >
+            <div className="fixed inset-0 bg-gray-500 bg-opacity-20 transition-opacity"></div>
+            <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+              <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                <div
+                  className={clsx(
+                    "relative p-6 transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-11/12",
+                    className && className
+                  )}
+                >
+                  <div className="flex justify-between items-center pb-4">
+                    <h3 className="text-5xl leading-tight">{title}</h3>
+                    <Button
+                      onClick={onClose}
+                      addonLeft={<CrossSvg width={20} height={20} />}
+                    />
+                  </div>
+                  {children}
                 </div>
-                {children}
               </div>
             </div>
           </div>
-        </div>
-      </Portal>
-    )
+        </Portal>
+      )}
+    </>
   );
 };
