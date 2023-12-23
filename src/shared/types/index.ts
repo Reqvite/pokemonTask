@@ -6,6 +6,10 @@ interface SelectOptionI {
 }
 
 interface PokemonI {
+  id: string;
+  sprites: {
+    back_default: string;
+  };
   name: string;
   url: string;
 }

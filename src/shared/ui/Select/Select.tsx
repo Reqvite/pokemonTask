@@ -5,7 +5,7 @@ import { DropDownBox } from "./DropDownBox";
 import { PokemonI, SelectOptionI } from "@/shared/types";
 import { Label } from "../Label/Label";
 
-interface CustomSelectProps<T> {
+interface CustomSelectProps {
   onSetSelectedPokemons: (
     callback: (prevPokemons: PokemonI[]) => PokemonI[]
   ) => void;
@@ -13,18 +13,15 @@ interface CustomSelectProps<T> {
   disabled?: boolean;
   fullWidth: boolean;
   label: string;
-  options: Array<T>;
-  fetchData: any;
-  onSelect: (options: T[]) => void;
-  selectedOptions?: Array<T>;
+  options: Array<SelectOptionI>;
+  onSelect: (options: SelectOptionI[], value?: string) => void;
+  selectedOptions?: Array<SelectOptionI>;
   maxSelectedOptions?: number;
   className?: string;
   iconColor?: string;
 }
 
-export const Select = <T extends SelectOptionI>(
-  props: CustomSelectProps<T>
-) => {
+export const Select = (props: CustomSelectProps) => {
   const {
     onSetSelectedPokemons,
     error,
@@ -33,7 +30,6 @@ export const Select = <T extends SelectOptionI>(
     disabled,
     fullWidth,
     options = [],
-    fetchData,
     onSelect,
     selectedOptions = [],
     maxSelectedOptions = 4,
@@ -41,12 +37,11 @@ export const Select = <T extends SelectOptionI>(
   } = props;
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleOptionClick = (option: T) => {
+  const handleOptionClick = (option: SelectOptionI) => {
     if (!selectedOptions.some(({ value }) => value === option.value)) {
       const updatedSelectedOptions = [...selectedOptions, option];
       if (updatedSelectedOptions.length <= maxSelectedOptions) {
-        onSelect(updatedSelectedOptions);
-        fetchData(option.value);
+        onSelect(updatedSelectedOptions, option.value);
       }
     }
     setIsOpen(false);

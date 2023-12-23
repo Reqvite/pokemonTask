@@ -7,10 +7,9 @@ import { StartModal } from "../StartModal/StartModal";
 
 interface FormProps {
   selectedPokemons: PokemonI[];
-  fetchData: any;
   options: SelectOptionI[];
-  onSelect: any;
-  selectedOptions: any;
+  onSelect: (options: SelectOptionI[], value?: string) => void;
+  selectedOptions: SelectOptionI[];
   onSetSelectedPokemons: (
     callback: (prevPokemons: PokemonI[]) => PokemonI[]
   ) => void;
@@ -23,7 +22,6 @@ const maxSelectedOptions = 4;
 
 export const Form = (props: FormProps) => {
   const {
-    fetchData,
     options,
     selectedOptions,
     onSelect,
@@ -55,15 +53,18 @@ export const Form = (props: FormProps) => {
   };
 
   useEffect(() => {
-    if (Object.keys(errors).length !== 0) {
-      if (selectedPokemons.length !== maxSelectedOptions) {
-        setSelectError("You only can select 4 Pokemon");
-      }
-    }
-    if (selectedPokemons.length === maxSelectedOptions) {
+    console.log(selectedOptions.length);
+    if (selectedOptions.length === maxSelectedOptions) {
+      setSelectError("");
+    } else if (
+      selectedOptions.length !== maxSelectedOptions &&
+      submitCount !== 0
+    ) {
+      setSelectError("You only can select 4 Pokemon");
+    } else {
       setSelectError("");
     }
-  }, [JSON.stringify(errors), submitCount]);
+  }, [JSON.stringify(errors), submitCount, selectedOptions]);
 
   return (
     <section className="relative rounded-lg p-8 sm:p-12 shadow-2xl">
@@ -107,7 +108,6 @@ export const Form = (props: FormProps) => {
           onSelect={onSelect}
           selectedOptions={selectedOptions}
           options={options}
-          fetchData={fetchData}
           label={"Pokemons"}
           fullWidth
           className="bg-gray-800 text-gray-400"

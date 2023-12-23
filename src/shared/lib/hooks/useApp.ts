@@ -43,7 +43,36 @@ export const useApp = () => {
     });
   };
 
+  const onSelect = (updatetedOptions: SelectOptionI[], value?: string) => {
+    setSelectedOptions(updatetedOptions);
+    if (value) {
+      fetchPockemon(value);
+    }
+  };
+
   const newData = normilizedData();
+  useEffect(() => {
+    console.log(selectedOptions.length);
+    if (selectedOptions.length === 4) {
+      console.log(1);
+      const fetchData = async () => {
+        try {
+          const promises = selectedOptions.map(async (e) => {
+            const response = await $api.get(`pokemon/${e.value}`);
+            return response.data;
+          });
+
+          const selectedPokemonsData = await Promise.all(promises);
+
+          setSelectedPokemons(selectedPokemonsData);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+
+      fetchData();
+    }
+  }, [selectedOptions]);
 
   return {
     newData,
@@ -51,6 +80,6 @@ export const useApp = () => {
     selectedPokemons,
     setSelectedOptions,
     setSelectedPokemons,
-    fetchPockemon,
+    onSelect,
   };
 };

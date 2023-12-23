@@ -6,7 +6,7 @@ import clsx from "clsx";
 import { MouseEvent } from "react";
 import { SelectOptionI } from "@/shared/types";
 
-interface SelectBoxProps<T> {
+interface SelectBoxProps {
   disabled?: boolean;
   fullWidth?: boolean;
   isOpen: boolean;
@@ -14,12 +14,10 @@ interface SelectBoxProps<T> {
   handleSelectClick: () => void;
   handleBadgeClick: (e: MouseEvent, value: string) => void;
   handleSelectClear: (e: MouseEvent) => void;
-  selectedOptions: Array<T>;
+  selectedOptions: Array<SelectOptionI>;
   iconColor?: string;
 }
-export const SelectBox = <T extends SelectOptionI>(
-  props: SelectBoxProps<T>
-) => {
+export const SelectBox = (props: SelectBoxProps) => {
   const {
     iconColor,
     disabled,
@@ -65,14 +63,16 @@ export const SelectBox = <T extends SelectOptionI>(
       <div className="ml-auto w-1/10 flex">
         {selectedOptions.length !== 0 && (
           <Button
+            withoutHover
             size="xs"
             variant="text"
             className="text-purple-400"
-            addonLeft={<CrossSvg color={iconColor} />}
+            addonLeft={<CrossSvg color={iconColor} width={24} height={24} />}
             onClick={handleSelectClear}
           />
         )}
         <Button
+          withoutHover
           className={clsx(isOpen && "rotate-180")}
           size="xs"
           variant="text"

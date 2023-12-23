@@ -5,6 +5,7 @@ import CrossSvg from "../../assets/icons/cross.svg?react";
 import { Button } from "../Button/Button";
 
 interface ModalProps {
+  title?: string;
   className?: string;
   children?: ReactNode;
   isOpen?: boolean;
@@ -12,7 +13,7 @@ interface ModalProps {
 }
 
 export const Modal = (props: ModalProps) => {
-  const { className, children, isOpen, onClose } = props;
+  const { className, title, children, isOpen, onClose } = props;
 
   const onKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -51,11 +52,13 @@ export const Modal = (props: ModalProps) => {
                   className && className
                 )}
               >
-                <Button
-                  className="ml-auto"
-                  onClick={onClose}
-                  addonLeft={<CrossSvg width={20} height={20} />}
-                />
+                <div className="flex justify-between items-center pb-4">
+                  <h3 className="text-5xl leading-tight">{title}</h3>
+                  <Button
+                    onClick={onClose}
+                    addonLeft={<CrossSvg width={20} height={20} />}
+                  />
+                </div>
                 {children}
               </div>
             </div>

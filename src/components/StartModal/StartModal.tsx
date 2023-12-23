@@ -11,23 +11,27 @@ interface StartModalProps {
 export const StartModal = (props: StartModalProps) => {
   const { isOpen, selectedPokemons, onClose } = props;
   return (
-    <Modal isOpen={isOpen} onClose={onClose} className="bg-gray-900">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      className="bg-gray-900"
+      title={"Your team is ready, prepare for battle"}
+    >
       <div className="bg-gray">
-        <ul className="flex justify-center items-center flex-wrap">
+        <ul className="flex gap-2 justify-center items-center flex-wrap">
           {selectedPokemons.map(({ sprites, id, name }) => (
-            <li key={id} className="m-2">
-              <PokemonCard
-                src={sprites.back_default}
-                name={firstLetterToUpperCase(name)}
-              />
-            </li>
+            <PokemonCard
+              key={id}
+              src={sprites.back_default}
+              name={firstLetterToUpperCase(name)}
+            />
           ))}
         </ul>
         <div className="mt-3 flex justify-end items-center gap-2">
-          <Button variant="outline" fullWidth>
+          <Button variant="outline" onClick={onClose} size="lg">
             Cancle
           </Button>
-          <Button variant="primary" fullWidth>
+          <Button variant="primary" size="lg">
             Start
           </Button>
         </div>

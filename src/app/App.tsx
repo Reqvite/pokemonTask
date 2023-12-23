@@ -6,9 +6,8 @@ function App() {
     newData,
     selectedOptions,
     selectedPokemons,
-    setSelectedOptions,
     setSelectedPokemons,
-    fetchPockemon,
+    onSelect,
   } = useApp();
 
   return (
@@ -20,9 +19,8 @@ function App() {
       />
       <Form
         selectedPokemons={selectedPokemons}
-        fetchData={fetchPockemon}
         options={newData}
-        onSelect={setSelectedOptions}
+        onSelect={onSelect}
         onSetSelectedPokemons={setSelectedPokemons}
         selectedOptions={selectedOptions}
       />
