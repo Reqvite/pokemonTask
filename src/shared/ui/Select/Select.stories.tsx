@@ -1,4 +1,3 @@
-// @ts-nocheck
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { Select } from "./Select";
@@ -29,23 +28,29 @@ const testOptions = [
 ];
 
 export const Primary: Story = {
+  args: {
+    options: testOptions,
+    selectedOptions: [],
+    fullWidth: true,
+  },
   render: () => {
-    const [selectedOptions, setSelectedOptions] = useState<SelectOptionI[]>([]);
+    const [selectedOptions, setSelectedOptions] = useState([]);
 
     return (
-      <Select
-        className=" text-gray-400"
-        options={testOptions}
-        selectedOptions={console.log}
-        onSetSelectedPokemons={console.log}
-        error={""}
-        maxSelectedOptions={4}
-        onSelect={setSelectedOptions}
-        selectedOptions={selectedOptions}
-        fetchData={console.log}
-        label={"Pokemons"}
-        fullWidth
-      />
+      <div className="w-screen max-w-lg">
+        <Select
+          className=" text-gray-400"
+          options={testOptions}
+          selectedOptions={selectedOptions}
+          onSetSelectedPokemons={console.log}
+          error={""}
+          maxSelectedOptions={4}
+          //@ts-ignore
+          onSelect={setSelectedOptions}
+          fetchData={console.log}
+          fullWidth
+        />
+      </div>
     );
   },
 };

@@ -2,7 +2,7 @@ interface SelectOptionI {
   color?: string;
   content: string | number;
   value: string;
-  url: string;
+  url?: string;
 }
 
 interface PokemonI {

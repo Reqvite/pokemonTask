@@ -9,7 +9,7 @@ interface CustomSelectProps {
   error?: string;
   disabled?: boolean;
   fullWidth: boolean;
-  label: string;
+  label?: string;
   options: Array<SelectOptionI>;
   onSelect: (options: SelectOptionI[]) => void;
   selectedOptions?: Array<SelectOptionI>;
