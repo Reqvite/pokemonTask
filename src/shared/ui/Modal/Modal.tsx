@@ -49,8 +49,8 @@ export const Modal = (props: ModalProps) => {
               <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                 <div
                   className={clsx(
-                    "relative p-6 transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-11/12",
-                    className && className
+                    "relative p-6 transform overflow-hidden rounded-lg bg-gray-900 text-left shadow-xl transition-all sm:my-8 w-11/12",
+                    className && `${className}`
                   )}
                 >
                   <div className="flex justify-between items-center pb-4">

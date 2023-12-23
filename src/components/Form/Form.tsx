@@ -1,9 +1,9 @@
 import { PokemonI, SelectOptionI } from "@/shared/types";
 import { Button, Input, Select } from "@/shared/ui";
 import { nameRule } from "@/shared/validation/rules";
-import { useEffect, useState } from "react";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import { StartModal } from "../StartModal/StartModal";
+import { useFormL } from "./model/useForm";
 
 interface FormProps {
   selectedPokemons: PokemonI[];
@@ -11,51 +11,20 @@ interface FormProps {
   onSelect: (options: SelectOptionI[]) => void;
   selectedOptions: SelectOptionI[];
 }
-interface IFormInput {
-  firstName: string;
-  lastName: string;
-}
+
 const maxSelectedOptions = 4;
 
 export const Form = (props: FormProps) => {
   const { options, selectedOptions, onSelect, selectedPokemons } = props;
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectError, setSelectError] = useState("");
-
   const {
+    onToggleModal,
     handleSubmit,
+    onSubmit,
     control,
-    formState: { errors, submitCount },
-  } = useForm<IFormInput>({
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-    },
-  });
-
-  const onToggleModal = () => {
-    if (Object.keys(errors).length !== 0 || selectError) {
-      return;
-    }
-    setIsOpen((prev) => !prev);
-  };
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    onToggleModal();
-  };
-
-  useEffect(() => {
-    if (selectedOptions.length === maxSelectedOptions) {
-      setSelectError("");
-    } else if (
-      selectedOptions.length !== maxSelectedOptions &&
-      submitCount !== 0
-    ) {
-      setSelectError("You only can select 4 Pokemon");
-    } else {
-      setSelectError("");
-    }
-  }, [JSON.stringify(errors), submitCount, selectedOptions]);
-
+    isOpen,
+    errors,
+    selectError,
+  } = useFormL({ selectedOptions, maxSelectedOptions });
   return (
     <section className="relative rounded-lg p-8 sm:p-12 shadow-2xl">
       <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
