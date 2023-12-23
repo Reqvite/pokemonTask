@@ -11,7 +11,6 @@ interface StartModalProps {
 export const StartModal = (props: StartModalProps) => {
   const { isOpen, selectedPokemons, onClose } = props;
 
-  console.log(selectedPokemons);
   return (
     <Modal
       isOpen={isOpen}
