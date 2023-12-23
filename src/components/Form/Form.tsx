@@ -22,9 +22,6 @@ interface IFormInput {
 const maxSelectedOptions = 4;
 
 export const Form = (props: FormProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const [selectError, setSelectError] = useState("");
   const {
     fetchData,
     options,
@@ -33,6 +30,9 @@ export const Form = (props: FormProps) => {
     selectedPokemons,
     onSetSelectedPokemons,
   } = props;
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectError, setSelectError] = useState("");
+
   const {
     handleSubmit,
     control,
@@ -119,7 +119,11 @@ export const Form = (props: FormProps) => {
           </Button>
         </div>
       </form>
-      <StartModal isOpen={isOpen} onClose={onToggleModal} />
+      <StartModal
+        isOpen={isOpen}
+        onClose={onToggleModal}
+        selectedPokemons={selectedPokemons}
+      />
     </section>
   );
 };

@@ -1,20 +1,37 @@
-import { ReactNode } from "react";
+import { ReactNode, useCallback, useEffect } from "react";
 import { Portal } from "../Portal/Portal";
 import clsx from "clsx";
+import CrossSvg from "../../assets/icons/cross.svg?react";
 import { Button } from "../Button/Button";
 
 interface ModalProps {
   className?: string;
   children?: ReactNode;
   isOpen?: boolean;
-  onClose?: () => void;
-  lazy?: boolean;
+  onClose: () => void;
 }
 
-const ANIMATION_DELAY = 300;
-
 export const Modal = (props: ModalProps) => {
-  const { className, children, isOpen, onClose, lazy } = props;
+  const { className, children, isOpen, onClose } = props;
+
+  const onKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    },
+    [onClose]
+  );
+
+  useEffect(() => {
+    if (isOpen) {
+      window.addEventListener("keydown", onKeyDown);
+    }
+
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [isOpen, onKeyDown]);
 
   return (
     isOpen && (
@@ -25,11 +42,20 @@ export const Modal = (props: ModalProps) => {
           role="dialog"
           aria-modal="true"
         >
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+          <div className="fixed inset-0 bg-gray-500 bg-opacity-20 transition-opacity"></div>
           <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-              <div className="relative p-6 transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                <button onClick={onClose}>close</button>
+              <div
+                className={clsx(
+                  "relative p-6 transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-11/12",
+                  className && className
+                )}
+              >
+                <Button
+                  className="ml-auto"
+                  onClick={onClose}
+                  addonLeft={<CrossSvg width={20} height={20} />}
+                />
                 {children}
               </div>
             </div>

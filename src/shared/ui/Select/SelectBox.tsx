@@ -31,10 +31,11 @@ export const SelectBox = <T extends SelectOptionI>(
     selectedOptions,
     maxSelectedOptions,
   } = props;
+
   return (
     <div
       className={clsx(
-        "flex h-10 gap-2 px-4 py-1 items-center w-fit border-2 border-gray-400 hover:border-purple-500 rounded-md font-medium transition-all min-w-96",
+        "flex h-10 gap-2 px-4 py-1 items-center w-fit border-2 border-gray-400 hover:border-purple-500 rounded-md font-medium transition-all",
 
         isOpen && "border-purple-500",
         fullWidth && "w-full",
@@ -43,14 +44,15 @@ export const SelectBox = <T extends SelectOptionI>(
       )}
       onClick={handleSelectClick}
     >
-      <div className="flex overflow-x-auto gap-2 scrollbar-thin scrollbar-thumb-purple-300 w-full">
+      <div className="flex overflow-x-auto gap-2 scrollbar-thin scrollbar-thumb-purple-200 w-full">
         {selectedOptions.length > 0 ? (
           selectedOptions
             .slice(0, maxSelectedOptions)
-            .map(({ content, value }) => (
+            .map(({ content, value, color }) => (
               <Badge
                 key={content}
                 withButton
+                color={color}
                 onClick={(e) => handleBadgeClick(e, value)}
               >
                 {content}
